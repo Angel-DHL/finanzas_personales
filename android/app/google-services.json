@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "82654456662",
+    "project_id": "finanzas-personales-1563d",
+    "storage_bucket": "finanzas-personales-1563d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82654456662:android:08d5d425229398737b44f7",
+        "android_client_info": {
+          "package_name": "com.example.finanzas_personales"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "82654456662-mai404q0dtnn21tfosapbt1i2r1vrbdc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.finanzas_personales",
+            "certificate_hash": "6f6d66230a62ddda62a678d62ddf90d50b67b5b7"
+          }
+        },
+        {
+          "client_id": "82654456662-j6rdu1gkbpppenf7defu66n5n1o2pv8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrZ8IlAKm5Y4ppZX1vjQY8KtQi7INtEO0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "82654456662-j6rdu1gkbpppenf7defu66n5n1o2pv8o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "82654456662-ibtvv2hkp8ccda4bdhk2k5n9if14fhq7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.finanzasPersonales"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
