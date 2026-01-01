@@ -11,38 +11,56 @@ class FinanceSeedService {
     final catSnap = await _svc.categoriesCol(uid).limit(1).get();
 
     final batch = _fs.batch();
+    bool hasWrites = false;
 
     if (accSnap.docs.isEmpty) {
-      final a1 = _svc.accountsCol(uid).doc();
-      final a2 = _svc.accountsCol(uid).doc();
-      batch.set(a1, {
-        'name': 'Efectivo',
-        'openingBalanceCents': 0,
-        'archived': false,
-        'currency': 'MXN',
-        'createdAt': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-      batch.set(a2, {
-        'name': 'Tarjeta',
-        'openingBalanceCents': 0,
-        'archived': false,
-        'currency': 'MXN',
-        'createdAt': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+      hasWrites = true;
+
+      final defaults = [
+        {'name': 'Efectivo', 'kind': 'cash'},
+        {'name': 'Banco', 'kind': 'bank'},
+        {'name': 'Tarjeta', 'kind': 'card'},
+        {'name': 'Ahorros', 'kind': 'savings'},
+      ];
+
+      for (final a in defaults) {
+        final ref = _svc.accountsCol(uid).doc();
+        final name = a['name']!;
+        batch.set(ref, {
+          'name': name,
+          'nameLower': name.toLowerCase(),
+          'kind': a['kind'],
+          'openingBalanceCents': 0,
+          'archived': false,
+          'currency': 'MXN',
+          'createdAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      }
     }
 
     if (catSnap.docs.isEmpty) {
+      hasWrites = true;
+
       final expense = [
-        'Comida','Transporte','Renta','Servicios','Salud','Suscripciones','Compras','Otros',
+        'Comida',
+        'Transporte',
+        'Renta',
+        'Servicios',
+        'Salud',
+        'Suscripciones',
+        'Compras',
+        'Otros',
       ];
+
       for (var i = 0; i < expense.length; i++) {
-        final c = _svc.categoriesCol(uid).doc();
-        batch.set(c, {
-          'name': expense[i],
+        final ref = _svc.categoriesCol(uid).doc();
+        final name = expense[i];
+        batch.set(ref, {
+          'name': name,
+          'nameLower': name.toLowerCase(),
           'type': 'expense',
-          'sortOrder': i,
+          'sortOrder': i, // quedan arriba
           'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
         });
@@ -50,17 +68,21 @@ class FinanceSeedService {
 
       final income = ['Sueldo', 'Freelance', 'Ventas', 'Regalos', 'Otros'];
       for (var i = 0; i < income.length; i++) {
-        final c = _svc.categoriesCol(uid).doc();
-        batch.set(c, {
-          'name': income[i],
+        final ref = _svc.categoriesCol(uid).doc();
+        final name = income[i];
+        batch.set(ref, {
+          'name': name,
+          'nameLower': name.toLowerCase(),
           'type': 'income',
-          'sortOrder': i,
+          'sortOrder': i, // quedan arriba dentro de income si filtras
           'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
         });
       }
     }
 
-    await batch.commit();
+    if (hasWrites) {
+      await batch.commit();
+    }
   }
 }

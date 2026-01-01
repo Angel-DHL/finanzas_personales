@@ -1,23 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'profile_service.dart';
 
-final firestoreProvider = Provider<FirebaseFirestore>((ref) {
-  return FirebaseFirestore.instance;
-});
+final firebaseAuthProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
 final uidProvider = Provider<String?>((ref) {
-  return FirebaseAuth.instance.currentUser?.uid;
+  return ref.watch(firebaseAuthProvider).currentUser?.uid;
 });
 
 final profileServiceProvider = Provider<ProfileService>((ref) {
-  return ProfileService(ref.read(firestoreProvider));
+  return ProfileService(FirebaseFirestore.instance);
 });
 
 final profileStreamProvider = StreamProvider<Map<String, dynamic>?>((ref) {
   final uid = ref.watch(uidProvider);
   if (uid == null) return const Stream.empty();
-  final svc = ref.read(profileServiceProvider);
-  return svc.watchProfile(uid);
+  return ref.read(profileServiceProvider).watchProfile(uid);
 });

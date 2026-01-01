@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/firebase/firebase_providers.dart';
 import '../../profile/data/profile_providers.dart';
 import '../../profile/data/profile_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'recurring_service.dart';
 import '../domain/recurring_payment.dart';
 
